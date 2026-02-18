@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Oyonid AI Speaking</title>
+</head>
+<body>
+
+<h1>Oyonid AI Speaking</h1>
+
+<button onclick="startListening()">🎤 Speak</button>
+
+<p id="result"></p>
+
+<script>
+function startListening() {
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = 'en-US';
+
+  recognition.onresult = function(event) {
+    const text = event.results[0][0].transcript;
+    document.getElementById("result").innerText = text;
+    alert("You said: " + text);
+  };
+
+  recognition.start();
+}
+</script>
+
+</body>
+</html>
