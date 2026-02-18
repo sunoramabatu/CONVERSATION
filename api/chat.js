@@ -28,8 +28,18 @@ export default async function handler(req, res) {
     console.log(data); // 🔥 lihat error dari OpenAI
 
     if (!data.choices) {
-      return res.status(500).json({ reply: "AI error: " + JSON.stringify(data) });
+
+      let errorMessage = "Unknown error";
+
+      if (data.error && data.error.message) {
+        errorMessage = data.error.message;
+      }
+
+      return res.status(500).json({
+        reply: "OPENAI ERROR: " + errorMessage
+      });
     }
+
 
     const reply = data.choices[0].message.content;
 
