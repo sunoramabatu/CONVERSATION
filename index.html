@@ -19,12 +19,12 @@ function startListening() {
   recognition.onresult = function(event) {
     const text = event.results[0][0].transcript;
     document.getElementById("result").innerText = text;
-    alert("You said: " + text);
+    sendToAI(text);
   };
 
   recognition.start();
 }
 </script>
-
+<script src="script.js"></script>
 </body>
 </html>
