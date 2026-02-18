@@ -7,6 +7,7 @@ async function sendToAI(text) {
   });
 
   const data = await response.json();
+  console.log(data);
   speak(data.reply);
 }
 
