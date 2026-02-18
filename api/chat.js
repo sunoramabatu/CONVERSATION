@@ -1,27 +1,29 @@
 export default async function handler(req, res) {
 
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).end();
   }
 
-  const { message } = req.body || {};
+  const { message } = req.body;
 
-  if (!message) {
-    return res.status(400).json({ error: "No message received" });
-  }
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: "You are a friendly English speaking partner." },
+        { role: "user", content: message }
+      ]
+    })
+  });
 
-  let reply;
+  const data = await response.json();
 
-    if (message.toLowerCase().includes("how are you")) {
-      reply = "I'm great! Nice to talk with you. How about you?";
-    }
-    else if (message.toLowerCase().includes("hello")) {
-      reply = "Hello! What do you want to talk about today?";
-    }
-    else {
-      reply = "Interesting! Tell me more.";
-    }
-
+  const reply = data.choices[0].message.content;
 
   res.status(200).json({ reply });
 }
